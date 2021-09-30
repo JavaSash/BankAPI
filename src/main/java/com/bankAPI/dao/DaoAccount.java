@@ -15,6 +15,7 @@ public interface DaoAccount {
     //read
     List<BankAccount> getAllAccounts();
     BankAccount getAccountById(int id);
+    int getAccountId(BankAccount account);
 
     //update
     void updateAccount(BankAccount account);

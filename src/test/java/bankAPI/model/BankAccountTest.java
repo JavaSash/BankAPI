@@ -7,6 +7,7 @@ import com.bankAPI.model.Client;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -19,7 +20,7 @@ public class BankAccountTest {
     private static final float amountPositive = 10.24f;
     Client client = new Client(FULL_NAME);
     BankAccount account = client.getAccount();
-    Set<BankCard> cards = account.getAllCards();
+    List<BankCard> cards = account.getAllCards();
 
     @Test
     public void issueCard() {

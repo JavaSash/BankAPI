@@ -23,13 +23,17 @@ public class DaoAccountImpl implements DaoAccount {
     private static final String GET_ALL_ACCOUNTS = "SELECT ACCOUNT_ID, ACCOUNT_NUMBER, OWNER FROM ACCOUNTS";
     private static final String SELECT_BY_ID =
             "SELECT ACCOUNT_ID, ACCOUNT_NUMBER, OWNER FROM ACCOUNTS WHERE ACCOUNT_ID = ?";
+    private static final String GET_ACCOUNT_ID = "SELECT ACCOUNT_ID FROM ACCOUNTS WHERE ACCOUNT_NUMBER =?";
 
     private static final String UPDATE_ACCOUNT =
             "UPDATE ACCOUNTS SET ACCOUNT_ID=?, ACCOUNT_NUMBER=?, OWNER FROM ACCOUNTS=? WHERE ACCOUNT_ID=?";
 
     private static final String DELETE_ACCOUNT = "DELETE FROM ACCOUNTS WHERE ACCOUNT_ID = ?";
-    private static final String CLEAR_ACCOUNTS = "DELETE * FROM ACCOUNTS";
+    private static final String CLEAR_ACCOUNTS = "DELETE FROM ACCOUNTS WHERE ACCOUNT_ID <10000";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS Accounts;";
+
+    public DaoAccountImpl() {
+    }
 
     @Override
     public void createAccountTable() {
@@ -92,9 +96,26 @@ public class DaoAccountImpl implements DaoAccount {
             account.setAccountNumber(result.getString("ACCOUNT_NUMBER"));
             account.setOwnersFullName(result.getString("OWNER"));
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BankApiException("Can't get account with id " + id);
         }
         return account;
+    }
+
+    @Override
+    public int getAccountId(BankAccount account) {
+        int id;
+        try (Connection connection = getConnection()) {
+            PreparedStatement preStatement = connection.prepareStatement(GET_ACCOUNT_ID);
+            preStatement.setString(1, account.getAccountNumber());
+            ResultSet result = preStatement.executeQuery();
+
+            id = result.getInt("ACCOUNT_ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new BankApiException("Can't get account " + account);
+        }
+        return id;
     }
 
     @Override

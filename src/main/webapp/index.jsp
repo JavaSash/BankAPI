@@ -1,3 +1,4 @@
+<%@ page import="com.bankAPI.service.ConfigDb" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -7,7 +8,9 @@
 <h1><%= "Bank API" %>
 </h1>
 <br/>
-<a href="IssueCardServlet">Issue card</a>
+<% ConfigDb.setDefaultConfigDb();%>
+<a href="IssueCard">Issue card</a>
+
 <br>
 <a href="GetAllCards">Get all cards</a>
 <br>

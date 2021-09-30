@@ -1,28 +1,17 @@
 package com.bankAPI;
 
-import com.bankAPI.dao.DaoAccount;
-import com.bankAPI.dao.DaoAccountImpl;
-import com.bankAPI.dao.DaoCardImpl;
-import com.bankAPI.model.BankAccount;
-import com.bankAPI.model.BankCard;
-import com.bankAPI.model.Client;
+import com.bankAPI.service.CardService;
+import com.bankAPI.service.ConfigDb;
+import com.bankAPI.util.numberGenerator;
+
+import java.io.PrintWriter;
 
 public class Main {
 
     public static void main(String[] args) {
-        DaoAccount daoAccount = new DaoAccountImpl();
-        daoAccount.dropAccountTable();
-        daoAccount.createAccountTable();
-        BankAccount account = new BankAccount();
-        daoAccount.addAccount(account);
+        ConfigDb.setDefaultConfigDb();
 
+        System.out.println(CardService.getAllCards());
 
-        DaoCardImpl daoCard = new DaoCardImpl();
-//      daoCard.isExist();
-        daoCard.createCardsTable();
-        //BankCard card = account.issueCard();
-        //daoCard.addCard(card);
-//        daoCard.dropCardsTable();
-        //System.out.println(daoAccount.getAllAccounts());
     }
 }

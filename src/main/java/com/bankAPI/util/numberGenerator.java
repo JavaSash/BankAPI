@@ -6,7 +6,8 @@ package com.bankAPI.util;
 //TODO: учёт сгенерированных номеров для исключения коллизий
 public class numberGenerator {
     private static final int START_INTERVAL = 1000;
-    private static int endInterval = 9999;
+    private static final int endIntervalDefault = 9999;
+    private static int endInterval = endIntervalDefault;
     private static final int accountGenerateIterations = 5;
     private static final int cardGenerateIterations = 4;
 
@@ -20,8 +21,9 @@ public class numberGenerator {
     public static final String generateCardNumber() {
         return generateSequence(cardGenerateIterations);
     }
-
+//TODO: генерить по 1 цифре, не по 4, чтобы не зависеть от кратности 4м
     private static final int generateNumber() {
+        endInterval = endIntervalDefault;
         endInterval -= START_INTERVAL;
         return (int) ((Math.random() * endInterval) + START_INTERVAL);
     }

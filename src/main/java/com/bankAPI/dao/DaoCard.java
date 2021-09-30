@@ -1,6 +1,5 @@
 package com.bankAPI.dao;
 
-import com.bankAPI.model.BankAccount;
 import com.bankAPI.model.BankCard;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public interface DaoCard {
     void addCard(BankCard card);
 
     //read
-    List<BankCard> getAllCardsByAccountId(int id);
+    List<BankCard> getAllCards(int id);
     BankCard getCardById(int id);
 
     //update

@@ -15,18 +15,16 @@ import static com.bankAPI.util.ConnectionUtil.getConnection;
  * Класс, реализующий взаимодействия с таблицей карт в БД
  */
 public class DaoCardImpl implements DaoCard {
-    private static final String IS_EXIST = "SHOW TABLES FROM Bank_Accounts LIKE Cards;";
-
-    private static final String createCardsTable = "CREATE TABLE IF NOT EXISTS Cards (CARD_ID INT PRIMARY KEY NOT NULL,\n" +
+    private static final String createCardsTable = "CREATE TABLE IF NOT EXISTS Cards (CARD_ID SERIAL PRIMARY KEY NOT NULL,\n" +
             "CARD_NUMBER CHAR(16) NOT NULL UNIQUE,\n" +
-            "ACCOUNT_ID INT REFERENCES Cards(ACCOUNT_ID)\n" +
+            "ACCOUNT_ID INT REFERENCES Cards(ACCOUNT_ID) ON DELETE CASCADE ON UPDATE CASCADE\n" +
             ");";
 
     private static final String INSERT_INTO_CADRS = "INSERT INTO Cards (CARD_ID, CARD_NUMBER, ACCOUNT_ID) " +
             "VALUES(?, ?, ?)";
 
-    private static final String GET_ALL_CARDS_BY_ACC_ID =
-            "SELECT CARD_ID, CARD_NUMBER, ACCOUNT_ID FROM CARDS WHERE ACCOUNT_ID=?";
+    private static final String GET_ALL_CARDS =
+            "SELECT CARD_ID, CARD_NUMBER, ACCOUNT_ID FROM CARDS";
     private static final String SELECT_BY_ID =
             "SELECT CARD_ID, CARD_NUMBER, ACCOUNT_ID FROM CARDS WHERE CARD_ID = ?";
 
@@ -34,9 +32,9 @@ public class DaoCardImpl implements DaoCard {
             "UPDATE CARDS SET CARD_ID=?, CARD_NUMBER=?, ACCOUNT_ID FROM CARDS=? WHERE CARD_ID=?";
 
     private static final String DELETE_CARD = "DELETE FROM CARDS WHERE CARD_ID = ?";
-    private static final String CLEAR_CARDS = "DELETE * FROM CARDS";
+    private static final String CLEAR_CARDS = "DELETE FROM Cards WHERE CARD_ID <10000";
 
-    private static final String dropTable = "DROP IF EXISTS TABLE Cards;";
+    private static final String DROP_TABLE = "DROP TABLE IF EXISTS Cards;";
 
     @Override
     public void createCardsTable() {
@@ -58,19 +56,20 @@ public class DaoCardImpl implements DaoCard {
 
             preStatement.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BankApiException("Can't add card " + card);
         }
     }
 
     @Override
-    public List<BankCard> getAllCardsByAccountId(int id) {
+    public List<BankCard> getAllCards(int id) {
         List<BankCard> cards = new ArrayList<>();
 
         try (Connection connection = getConnection()) {
             Statement statement = connection.createStatement();
-            PreparedStatement preStatement = connection.prepareStatement(GET_ALL_CARDS_BY_ACC_ID);
-            preStatement.setInt(1, id);
-            ResultSet result = statement.executeQuery(GET_ALL_CARDS_BY_ACC_ID);
+            PreparedStatement preStatement = connection.prepareStatement(GET_ALL_CARDS);
+            ResultSet result = statement.executeQuery(GET_ALL_CARDS);
+//            ResultSet result = preStatement.executeQuery(GET_ALL_CARDS);
 
             while (result.next()) {
                 BankAccount account = new DaoAccountImpl().getAccountById(id);
@@ -82,7 +81,8 @@ public class DaoCardImpl implements DaoCard {
                 cards.add(card);
             }
         } catch (SQLException e) {
-            throw new BankApiException("Can't get all cards by this account id " + id);
+            e.printStackTrace();
+            throw new BankApiException("Can't get all cards by account id " + id);
         }
         return cards;
     }
@@ -123,8 +123,9 @@ public class DaoCardImpl implements DaoCard {
     public void dropCardsTable() {
         try (Connection connection = getConnection()) {
             Statement statement = connection.createStatement();
-            statement.execute(dropTable);
+            statement.execute(DROP_TABLE);
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BankApiException("Can't drop table Cards from database");
         }
     }
@@ -147,6 +148,7 @@ public class DaoCardImpl implements DaoCard {
             PreparedStatement preStatement = connection.prepareStatement(CLEAR_CARDS);
             preStatement.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BankApiException("Can't clear Cards");
         }
     }

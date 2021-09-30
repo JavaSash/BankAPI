@@ -3,10 +3,10 @@ package com.bankAPI.model;
 import com.bankAPI.exception.BankApiException;
 import com.bankAPI.util.numberGenerator;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.Objects;
+import java.util.List;
 import java.util.Set;
-import com.bankAPI.model.BankCard;
 
 //TODO: addAccount Logger
 public class BankAccount implements ClientInterface {
@@ -15,7 +15,7 @@ public class BankAccount implements ClientInterface {
     private int accountId;
     private String accountNumber;
     private String ownersFullName;
-    private Set<BankCard> cards = new LinkedHashSet<>();
+    private List<BankCard> cards = new ArrayList<>();
     private float balance = .0f;
 
     public BankAccount(String fullName) {
@@ -38,7 +38,7 @@ public class BankAccount implements ClientInterface {
     }
 
     @Override
-    public Set<BankCard> getAllCards() {
+    public List<BankCard> getAllCards() {
         return cards;
     }
 
@@ -79,11 +79,11 @@ public class BankAccount implements ClientInterface {
         this.ownersFullName = ownersFullName;
     }
 
-    public Set<BankCard> getCards() {
+    public List<BankCard> getCards() {
         return cards;
     }
 
-    public void setCards(Set<BankCard> cards) {
+    public void setCards(List<BankCard> cards) {
         this.cards = cards;
     }
 
@@ -118,6 +118,7 @@ public class BankAccount implements ClientInterface {
     @Override
     public String toString() {
         return "BankAccount{" +
+                "accountId = '" + accountId + '\'' +
                 "accountNumber = '" + accountNumber + '\'' +
                 ", ownersFullName = '" + ownersFullName + '\'' +
                 ", balance = '" + balance + '\'' +

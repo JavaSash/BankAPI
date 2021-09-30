@@ -7,7 +7,7 @@ import java.util.Properties;
  * Класс для загрузки properties проекта
  */
 public class Config {
-    private static final File PROPERTIES = new File("src/main/resources/bankAPI.properties");
+    private static final File PROPERTIES = new File("bankAPI.properties");
     private static Config instance;
     private Properties props = new Properties();
     private static String url;
