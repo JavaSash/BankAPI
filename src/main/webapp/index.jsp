@@ -7,12 +7,12 @@
 <h1><%= "Bank API" %>
 </h1>
 <br/>
-<a href="index-jsp">issueCard</a>
+<a href="IssueCardServlet">Issue card</a>
 <br>
-<a href="Servlet">getAllCards</a>
+<a href="GetAllCards">Get all cards</a>
 <br>
-<a href="Test.jsp">deposit</a>
+<a href="Deposit">Deposit</a>
 <br>
-<a href="Servlet">getBalance</a>
+<a href="GetBalance">Get balance</a>
 </body>
 </html>

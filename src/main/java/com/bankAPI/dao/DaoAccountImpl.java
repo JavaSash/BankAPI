@@ -13,7 +13,7 @@ import static com.bankAPI.util.ConnectionUtil.getConnection;
  * Класс, реализующий взаимодействия с таблицей аккаунтов в БД
  */
 public class DaoAccountImpl implements DaoAccount {
-    private static final String createAccountsTable = "CREATE TABLE Accounts (ACCOUNT_ID INT PRIMARY KEY NOT NULL,\n" +
+    private static final String createAccountsTable = "CREATE TABLE IF NOT EXISTS Accounts (ACCOUNT_ID INT PRIMARY KEY NOT NULL,\n" +
             "ACCOUNT_NUMBER CHAR(20) NOT NULL UNIQUE,\n" +
             "OWNER CHAR(255) NOT NULL\n" +
             ");";
@@ -29,17 +29,15 @@ public class DaoAccountImpl implements DaoAccount {
 
     private static final String DELETE_ACCOUNT = "DELETE FROM ACCOUNTS WHERE ACCOUNT_ID = ?";
     private static final String CLEAR_ACCOUNTS = "DELETE * FROM ACCOUNTS";
-    private static final String dropTable = "DROP TABLE Accounts;";
-
-
-    private Statement statement;
+    private static final String DROP_TABLE = "DROP TABLE IF EXISTS Accounts;";
 
     @Override
     public void createAccountTable() {
         try (Connection connection = getConnection()) {
-            statement = connection.createStatement();
+            Statement statement = connection.createStatement();
             statement.execute(createAccountsTable);
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BankApiException("Can't create table Accounts in database");
         }
     }
@@ -53,6 +51,7 @@ public class DaoAccountImpl implements DaoAccount {
             preStatement.setString(3, account.getOwnersFullName());
             preStatement.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BankApiException("Can't addAccount " + account);
         }
     }
@@ -66,6 +65,7 @@ public class DaoAccountImpl implements DaoAccount {
             ResultSet result = statement.executeQuery(GET_ALL_ACCOUNTS);
 
             while (result.next()) {
+
                 BankAccount account = new BankAccount();
                 account.setAccountId(result.getInt("ACCOUNT_ID"));
                 account.setAccountNumber(result.getString("ACCOUNT_NUMBER"));
@@ -114,9 +114,10 @@ public class DaoAccountImpl implements DaoAccount {
     @Override
     public void dropAccountTable() {
         try (Connection connection = getConnection()) {
-            statement = connection.createStatement();
-            statement.execute(dropTable);
+            Statement statement = connection.createStatement();
+            statement.execute(DROP_TABLE);
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BankApiException("Can't drop table Accounts from database");
         }
     }

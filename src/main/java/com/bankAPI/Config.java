@@ -8,14 +8,14 @@ import java.util.Properties;
  */
 public class Config {
     private static final File PROPERTIES = new File("src/main/resources/bankAPI.properties");
-    private static final Config INSTANCE = new Config();
+    private static Config instance;
     private Properties props = new Properties();
     private static String url;
     private static String login;
     private static String password;
-
+//TODO: разобраться почему не запускается конекшн с конфигом
     private Config() {
-        try(InputStream inputStream = new FileInputStream(PROPERTIES)) {
+        try (InputStream inputStream = new FileInputStream(PROPERTIES)) {
             props.load(inputStream);
             url = props.getProperty("db.url");
             login = props.getProperty("db.login");
@@ -26,7 +26,10 @@ public class Config {
     }
 
     public static Config getInstance() {
-        return INSTANCE;
+        if (instance == null) {
+            instance = new Config();
+        }
+        return instance;
     }
 
     public static String getUrl() {

@@ -15,7 +15,9 @@ import static com.bankAPI.util.ConnectionUtil.getConnection;
  * Класс, реализующий взаимодействия с таблицей карт в БД
  */
 public class DaoCardImpl implements DaoCard {
-    private static final String createCardsTable = "CREATE TABLE Cards (CARD_ID INT PRIMARY KEY NOT NULL,\n" +
+    private static final String IS_EXIST = "SHOW TABLES FROM Bank_Accounts LIKE Cards;";
+
+    private static final String createCardsTable = "CREATE TABLE IF NOT EXISTS Cards (CARD_ID INT PRIMARY KEY NOT NULL,\n" +
             "CARD_NUMBER CHAR(16) NOT NULL UNIQUE,\n" +
             "ACCOUNT_ID INT REFERENCES Cards(ACCOUNT_ID)\n" +
             ");";
@@ -34,14 +36,12 @@ public class DaoCardImpl implements DaoCard {
     private static final String DELETE_CARD = "DELETE FROM CARDS WHERE CARD_ID = ?";
     private static final String CLEAR_CARDS = "DELETE * FROM CARDS";
 
-    private static final String dropTable = "DROP TABLE Cards;";
-
-    private Statement statement;
+    private static final String dropTable = "DROP IF EXISTS TABLE Cards;";
 
     @Override
     public void createCardsTable() {
         try (Connection connection = getConnection()) {
-            statement = connection.createStatement();
+            Statement statement = connection.createStatement();
             statement.execute(createCardsTable);
         } catch (SQLException e) {
             throw new BankApiException("Can't create Cards table in database");
@@ -122,7 +122,7 @@ public class DaoCardImpl implements DaoCard {
     @Override
     public void dropCardsTable() {
         try (Connection connection = getConnection()) {
-            statement = connection.createStatement();
+            Statement statement = connection.createStatement();
             statement.execute(dropTable);
         } catch (SQLException e) {
             throw new BankApiException("Can't drop table Cards from database");

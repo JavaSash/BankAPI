@@ -26,6 +26,7 @@ public class BankAccount implements ClientInterface {
     }
 
     public BankAccount() {
+        this("Default Name");
     }
 
     @Override
