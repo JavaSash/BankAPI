@@ -8,11 +8,6 @@ public class BankApiException extends RuntimeException {
         this.uuid = uuid;
     }
 
-    public BankApiException(String message, String uuid, Exception e) {
-        super(message, e);
-        this.uuid = uuid;
-    }
-
     public BankApiException(String message) {
         super(message);
     }

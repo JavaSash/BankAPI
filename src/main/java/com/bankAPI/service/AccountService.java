@@ -17,11 +17,9 @@ public class AccountService {
 
     public static BankAccount getAccount() {
         List<BankAccount> list = daoAccount.getAllAccounts();
-        System.out.println(list);
         if (!list.contains(account)) {
             daoAccount.addAccount(account);
         }
-        System.out.println("AFTER\n" + daoAccount.getAllAccounts());
         return account;
     }
 

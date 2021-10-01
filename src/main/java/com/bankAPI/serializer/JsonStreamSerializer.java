@@ -1,7 +1,5 @@
 package com.bankAPI.serializer;
 
-import com.bankAPI.dto.ArrayOfCardsDto;
-import com.bankAPI.dto.CardDto;
 import com.bankAPI.model.BankAccount;
 import com.bankAPI.util.JsonParser;
 
@@ -27,11 +25,4 @@ public class JsonStreamSerializer implements StreamSerializer {
             return JsonParser.read(reader, BankAccount.class);
         }
     }
-
-    public CardDto readArrayCardsDto(InputStream inputStream) throws IOException {
-        try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
-            return JsonParser.read(reader, CardDto.class);
-        }
-    }
-
 }

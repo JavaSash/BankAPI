@@ -10,11 +10,10 @@
 <br/>
 <% ConfigDb.setDefaultConfigDb();%>
 <a href="IssueCard">Issue card</a>
-
 <br>
 <a href="GetAllCards">Get all cards</a>
 <br>
-<a href="Deposit">Deposit</a>
+<a href="Deposit">Deposit+100</a>
 <br>
 <a href="GetBalance">Get balance</a>
 </body>

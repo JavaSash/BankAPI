@@ -7,7 +7,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * Парсер для сериализации в JSON и деериализации.
+ * Парсер для сериализации в JSON и десериализации.
  */
 public class JsonParser {
     private static Gson GSON = new GsonBuilder().create();

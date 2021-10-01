@@ -7,11 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="webApp" />
+        <module name="bankApi" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="webApp" target="1.8" />
+      <module name="bankApi" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
